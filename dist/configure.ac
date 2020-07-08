@@ -511,10 +511,10 @@ dnl 	[
 	else
 	    if test "$vi_cv_widechar" = "yes"; then
 		CURSCPPFLAGS=$($PKG_CONFIG --cflags ncursesw)
-		CURLSLIBS=$($PKG_CONFIG --libs ncursesw)
+		CURSLIBS=$($PKG_CONFIG --libs ncursesw)
 	    else
 		CURSCPPFLAGS=$($PKG_CONFIG --cflags ncurses)
-		CURLSLIBS=$($PKG_CONFIG --libs ncurses)
+		CURSLIBS=$($PKG_CONFIG --libs ncurses)
 	    fi
 	    if test $? != 0; then
 		vi_cv_curses=unknown
@@ -547,8 +547,10 @@ dnl 	[
 		    AC_CHECK_HEADERS(ncursesw/ncurses.h,
 			[CURSHEADER=ncursesw/ncurses.h])
 		fi
-		vi_programs="vi $vi_programs"
-		CURSLIBS="-l$vi_cv_curses"
+		if test "x$with_curses" != "x"; then
+		    vi_programs="vi $vi_programs"
+		    CURSLIBS="-l$vi_cv_curses"
+		fi
 	    else
 		AC_MSG_WARN([*** No suitable curses library found.])
 		if test "$vi_programs"X = X; then
