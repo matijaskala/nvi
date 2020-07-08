@@ -308,7 +308,7 @@ if test "$vi_cv_gtk" = "yes"; then
 	    else
 		AM_PATH_GTK(1.2.0)
 		GTKINCS="$GTK_CFLAGS"
-		GTKLIBS="$GTK_LIBS $LIBS"
+		GTKLIBS="$GTKLIBS $LIBS"
 	    fi
 	fi
 
@@ -1018,7 +1018,7 @@ AM_CONDITIONAL(BUNDLED_DB, test $with_db_type = bundled)
 case "$with_db_type" in
 bundled)
 	AC_DEFINE(USE_BUNDLED_DB, 1, [Define when using bundled db.])
-	LIBOBJS="log1.o $LIBOBJS"
+	LIBOBJS="libvi_la-log1.o $LIBOBJS"
 	;;
 system)
 	SAVELDFLAGS="$LDFLAGS"

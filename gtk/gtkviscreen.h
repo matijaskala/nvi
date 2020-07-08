@@ -8,7 +8,6 @@
 
 #ifdef HAVE_PANGO
 #include <pango/pango.h>
-#include <pango/pangox.h>
 #else
 #define xthickness klass->xthickness
 #define ythickness klass->ythickness

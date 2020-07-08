@@ -179,14 +179,14 @@ int		val;
  * drawing areas
  */
 
-void	select_start();
-void	select_extend();
-void	select_paste();
-void	key_press();
-void	insert_string();
-void	beep __P((Widget w));
-void	find();
-void	command();
+static void	select_start();
+static void	select_extend();
+static void	select_paste();
+static void	key_press();
+static void	insert_string();
+static void	beep __P((Widget w));
+static void	find();
+static void	command();
 
 static XtActionsRec	area_actions[] = {
     { "select_start",	select_start	},
@@ -1406,7 +1406,7 @@ String	__vi_get_word_at_caret(xvi_screen *this_screen)
  *
  * PUBLIC: void draw_caret __P((xvi_screen *));
  */
-static void
+void
 draw_caret(xvi_screen *this_screen)
 {
     /* draw the caret by drawing the text in highlight color */

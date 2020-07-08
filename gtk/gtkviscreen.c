@@ -375,8 +375,7 @@ gtk_vi_screen_init (GtkViScreen *vi)
 #endif
 
   style = gtk_style_copy(GTK_WIDGET(vi)->style);
-  gdk_font_unref(style->font);
-  style->font = gdk_font_load("-*-fixed-*-*-*-*-16-*-*-*-*-*-iso8859-*");
+  gtk_style_set_font(style, gdk_font_load("-*-fixed-*-*-*-*-16-*-*-*-*-*-iso8859-*"));
   GTK_WIDGET(vi)->style = style;
 }
 
@@ -518,6 +517,7 @@ gtk_vi_screen_size_request (GtkWidget      *widget,
   gint char_height;
   gint char_width;
   GtkViScreen *vi;
+  GdkFont *font;
   
   g_return_if_fail (widget != NULL);
   g_return_if_fail (GTK_IS_VI_SCREEN (widget));
@@ -528,9 +528,10 @@ gtk_vi_screen_size_request (GtkWidget      *widget,
   xthick = widget->style->xthickness + VI_SCREEN_BORDER_ROOM;
   ythick = widget->style->ythickness + VI_SCREEN_BORDER_ROOM;
   
-  vi->ch_ascent = widget->style->font->ascent;
-  vi->ch_height = (widget->style->font->ascent + widget->style->font->descent) + 1;
-  vi->ch_width = gdk_text_width (widget->style->font, "A", 1);
+  font = gtk_style_get_font(widget->style);
+  vi->ch_ascent = font->ascent;
+  vi->ch_height = (font->ascent + font->descent) + 1;
+  vi->ch_width = gdk_text_width (font, "A", 1);
   char_height = DEFAULT_VI_SCREEN_HEIGHT_LINES * vi->ch_height;
   char_width = DEFAULT_VI_SCREEN_WIDTH_CHARS * vi->ch_width;
   
@@ -691,19 +692,19 @@ draw_lines(GtkViScreen *vi, gint ymin, gint xmin, gint ymax, gint xmax)
 #ifdef HAVE_PANGO
 	    if (INTISUCS(*(line+x))) {
 		if (!vi->conx) {
-		    PangoFontDescription font_description;
+		    PangoFontDescription *font_description = pango_font_description_new();
 
-		    font_description.family_name = g_strdup ("monospace");
-		    font_description.style = PANGO_STYLE_NORMAL;
-		    font_description.variant = PANGO_VARIANT_NORMAL;
-		    font_description.weight = 500;
-		    font_description.stretch = PANGO_STRETCH_NORMAL;
-		    font_description.size = 15000;
+		    pango_font_description_set_family(font_description, "monospace");
+		    pango_font_description_set_style(font_description, PANGO_STYLE_NORMAL);
+		    pango_font_description_set_variant(font_description, PANGO_VARIANT_NORMAL);
+		    pango_font_description_set_weight(font_description, 500);
+		    pango_font_description_set_stretch(font_description, PANGO_STRETCH_NORMAL);
+		    pango_font_description_set_size(font_description, 15000);
 
 		    vi->conx = gdk_pango_context_get();
 		    pango_context_set_font_description (vi->conx, 
-			&font_description);
-		    pango_context_set_lang(vi->conx, "en_US");
+			font_description);
+		    pango_context_set_language(vi->conx, pango_language_from_string("en_US"));
 		    vi->alist = pango_attr_list_new();
 		}
 		blen = CHAR_WIDTH(NULL, *(line+x));
@@ -711,7 +712,7 @@ draw_lines(GtkViScreen *vi, gint ymin, gint xmin, gint ymax, gint xmax)
 	    } else 
 #endif
 	    {
-		font = GTK_WIDGET(vi)->style->font;
+		font = gtk_style_get_font(GTK_WIDGET(vi)->style);
 		if (sizeof(CHAR_T) == sizeof(gchar))
 		    p = (gchar*)line+x;
 		else {

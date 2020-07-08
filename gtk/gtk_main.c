@@ -91,12 +91,12 @@ void create_toplevel(GtkVi *vi)
 	accel = gtk_accel_group_new();
 	factory = gtk_item_factory_new (GTK_TYPE_MENU_BAR, "<main>", accel);
 	gtk_item_factory_create_items (factory, nmenu_items, menu_items, (gpointer)vi_window);
-	gtk_accel_group_attach(accel, GTK_OBJECT(window));
+	gtk_window_add_accel_group(GTK_WINDOW(window), accel);
 	menubar = gtk_item_factory_get_widget (factory, "<main>");
 	gtk_widget_show(menubar);
 	gtk_box_pack_start(GTK_BOX(box), menubar, FALSE, FALSE, 0);
 
-	gtk_accel_group_attach(accel, GTK_OBJECT(vi_window));
+	gtk_window_add_accel_group(GTK_WINDOW(vi_window), accel);
 	gtk_widget_show(vi_window);
 
 	gtk_signal_connect(GTK_OBJECT(vi_window), "rename",
