@@ -153,7 +153,7 @@ ex_wemsg(SCR* sp, CHAR_T *p, exm_t which)
 	char *np;
 	size_t nlen;
 
-	if (p) INT2CHAR(sp, p, STRLEN(p), np, nlen);
+	if (p) INT2CHAR(sp, p, NVI_STRLEN(p), np, nlen);
 	else np = NULL;
 	ex_emsg(sp, np, which);
 }

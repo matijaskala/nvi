@@ -175,7 +175,7 @@ vs_update(SCR *sp, const char *m1, const CHAR_T *m2)
 	 */
 	if (F_ISSET(sp, SC_SCR_EXWROTE)) {
 		if (m2 != NULL)
-			INT2CHAR(sp, m2, STRLEN(m2) + 1, np, nlen);
+			INT2CHAR(sp, m2, NVI_STRLEN(m2) + 1, np, nlen);
 		(void)ex_printf(sp,
 		    "%s\n", m1 == NULL? "" : m1, m2 == NULL ? "" : np);
 		(void)ex_fflush(sp);
@@ -203,7 +203,7 @@ vs_update(SCR *sp, const char *m1, const CHAR_T *m2)
 	} else
 		len = 0;
 	if (m2 != NULL) {
-		mlen = STRLEN(m2);
+		mlen = NVI_STRLEN(m2);
 		if (len + mlen > sp->cols - 2)
 			mlen = (sp->cols - 2) - len;
 		(void)gp->scr_waddstr(sp, m2, mlen);

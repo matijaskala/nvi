@@ -138,7 +138,7 @@ err:		if (input[0] != -1)
 		else
 			++name;
 
-		INT2SYS(sp, cmd, STRLEN(cmd)+1, np, nlen);
+		INT2SYS(sp, cmd, NVI_STRLEN(cmd)+1, np, nlen);
 		execl(O_STR(sp, O_SHELL), name, "-c", np, (char *)NULL);
 		msgq_str(sp, M_SYSERR, O_STR(sp, O_SHELL), "execl: %s");
 		_exit (127);
@@ -283,7 +283,7 @@ err:		if (input[0] != -1)
 	 * Ignore errors on vi file reads, to make reads prettier.  It's
 	 * completely inconsistent, and historic practice.
 	 */
-uwait:	INT2CHAR(sp, cmd, STRLEN(cmd) + 1, np, nlen);
+uwait:	INT2CHAR(sp, cmd, NVI_STRLEN(cmd) + 1, np, nlen);
 	return (proc_wait(sp, (long)utility_pid, np,
 	    ftype == FILTER_READ && F_ISSET(sp, SC_VI) ? 1 : 0, 0) || rval);
 }

@@ -378,7 +378,7 @@ msgq_wstr(SCR *sp, mtype_t mtype, CHAR_T *str, char *fmt)
 		msgq(sp, mtype, fmt);
 		return;
 	}
-	INT2CHAR(sp, str, STRLEN(str) + 1, nstr, nlen);
+	INT2CHAR(sp, str, NVI_STRLEN(str) + 1, nstr, nlen);
 	msgq_str(sp, mtype, nstr, fmt);
 }
 
@@ -640,7 +640,8 @@ msgq_status(SCR *sp, db_recno_t lno, u_int flags)
 			p += len;
 		} else {
 			t = msg_cat(sp, "027|line %lu of %lu [%ld%%]", &len);
-			(void)sprintf(p, t, lno, last, (lno * 100) / last);
+			(void)sprintf(p, t, (u_long)lno, (u_long)last,
+					((long)lno * 100L) / (long)last);
 			p += strlen(p);
 		}
 	} else {
@@ -724,7 +725,7 @@ msg_open(SCR *sp, char *file)
 		p = buf;
 	} else
 		p = file;
-	if (db_msg_open(sp, p, &db)) {
+	if (access(p, R_OK) || db_msg_open(sp, p, &db)) {
 		if (first) {
 			first = 0;
 			return (1);

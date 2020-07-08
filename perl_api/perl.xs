@@ -327,7 +327,7 @@ perl_ex_perl(scrp, cmdp, cmdlen, f_lno, t_lno)
 	newVIrv(pp->svid, scrp);
 
 	istat = signal(SIGINT, my_sighandler);
-	INT2CHAR(scrp, cmdp, STRLEN(cmdp)+1, np, nlen);
+	INT2CHAR(scrp, cmdp, NVI_STRLEN(cmdp)+1, np, nlen);
 	perl_eval(np);
 	signal(SIGINT, istat);
 
@@ -422,7 +422,7 @@ perl_ex_perldo(scrp, cmdp, cmdlen, f_lno, t_lno)
 	/* Backwards compatibility. */
 	newVIrv(pp->svid, scrp);
 
-	INT2CHAR(scrp, cmdp, STRLEN(cmdp)+1, np, nlen);
+	INT2CHAR(scrp, cmdp, NVI_STRLEN(cmdp)+1, np, nlen);
 	if (!(command = malloc(length = nlen - 1 + sizeof("sub {}"))))
 		return 1;
 	snprintf(command, length, "sub {%s}", np);

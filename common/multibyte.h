@@ -13,7 +13,7 @@ typedef	u_int		UCHAR_T;
 #define RCHAR_BIT	24
 
 #define ISUPPER		iswupper
-#define STRLEN		wcslen
+#define NVI_STRLEN		wcslen
 #define STRTOL		wcstol
 #define STRTOUL		wcstoul
 #define SPRINTF		swprintf
@@ -35,7 +35,7 @@ typedef	u_char		UCHAR_T;
 #define RCHAR_BIT	CHAR_BIT
 
 #define ISUPPER		isupper
-#define STRLEN		strlen
+#define NVI_STRLEN		strlen
 #define STRTOL		strtol
 #define STRTOUL		strtoul
 #define SPRINTF		snprintf

@@ -210,12 +210,15 @@ EXTRA_libvi_la_SOURCES = \
 	$(visrcdir)/common/pthread.c \
 	$(visrcdir)/common/vi_auto.c \
 	$(visrcdir)/common/vi_rec.c \
-	$(visrcdir)/perl_api/perl.xs \
+	perl.c \
 	$(visrcdir)/perl_api/perlsfio.c \
+	perlxsi.c \
 	$(visrcdir)/tcl_api/tcl.c
 # Is this the way to do it ?
 libvi_la_DEPENDENCIES = @LTLIBOBJS@
-libvi_la_LIBADD = @LTLIBOBJS@
+libvi_la_LIBADD = @LTLIBOBJS@ @perllibs@
+libvi_la_CPPFLAGS = @perlldflags@ $(AM_CPPFLAGS)
+libvi_la_LDFLAGS = @perlldflags@
 
 bin_PROGRAMS = @vi_programs@ @vi_ipc@
 EXTRA_PROGRAMS = vi vi-ipc vi-motif vi-gtk

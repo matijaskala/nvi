@@ -2053,7 +2053,7 @@ retry:		for (len = 0,
 		return (0);
 	case 1:				/* One match. */
 		/* If something changed, do the exchange. */
-		nlen = STRLEN(cmd.argv[0]->bp);
+		nlen = NVI_STRLEN(cmd.argv[0]->bp);
 		if (len != nlen || MEMCMP(cmd.argv[0]->bp, p, len))
 			break;
 

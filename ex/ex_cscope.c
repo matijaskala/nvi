@@ -140,7 +140,7 @@ ex_cscope(SCR *sp, EXCMD *cmdp)
 		for (; *p && isspace(*p); ++p);
 	}
 
-	INT2CHAR(sp, cmd, STRLEN(cmd) + 1, np, nlen);
+	INT2CHAR(sp, cmd, NVI_STRLEN(cmd) + 1, np, nlen);
 	if ((ccp = lookup_ccmd(np)) == NULL) {
 usage:		msgq(sp, M_ERR, "309|Use \"cscope help\" for help");
 		return (1);
@@ -214,7 +214,7 @@ cscope_add(SCR *sp, EXCMD *cmdp, CHAR_T *dname)
 	 * >1 additional args: object, too many args.
 	 */
 	cur_argc = cmdp->argc;
-	if (argv_exp2(sp, cmdp, dname, STRLEN(dname))) {
+	if (argv_exp2(sp, cmdp, dname, NVI_STRLEN(dname))) {
 		return (1);
 	}
 	if (cmdp->argc == cur_argc) {
@@ -228,7 +228,7 @@ cscope_add(SCR *sp, EXCMD *cmdp, CHAR_T *dname)
 		return (1);
 	}
 
-	INT2CHAR(sp, dname, STRLEN(dname)+1, np, nlen);
+	INT2CHAR(sp, dname, NVI_STRLEN(dname)+1, np, nlen);
 
 	/*
 	 * The user can specify a specific file (so they can have multiple
@@ -471,7 +471,7 @@ cscope_find(SCR *sp, EXCMD *cmdp, CHAR_T *pattern)
 	}
 
 	/* Create the cscope command. */
-	INT2CHAR(sp, pattern, STRLEN(pattern) + 1, np, nlen);
+	INT2CHAR(sp, pattern, NVI_STRLEN(pattern) + 1, np, nlen);
 	np = strdup(np);
 	if ((tqp = create_cs_cmd(sp, np, &search)) == NULL)
 		goto err;
@@ -801,7 +801,7 @@ cscope_help(SCR *sp, EXCMD *cmdp, CHAR_T *subcmd)
 	char *np;
 	size_t nlen;
 
-	INT2CHAR(sp, subcmd, STRLEN(subcmd) + 1, np, nlen);
+	INT2CHAR(sp, subcmd, NVI_STRLEN(subcmd) + 1, np, nlen);
 	return (csc_help(sp, np));
 }
 
@@ -842,7 +842,7 @@ cscope_kill(SCR *sp, EXCMD *cmdp, CHAR_T *cn)
 	char *np;
 	size_t nlen;
 
-	INT2CHAR(sp, cn, STRLEN(cn) + 1, np, nlen);
+	INT2CHAR(sp, cn, NVI_STRLEN(cn) + 1, np, nlen);
 	return (terminate(sp, NULL, atoi(np)));
 }
 

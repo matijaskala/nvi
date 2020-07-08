@@ -198,7 +198,7 @@ regcomp(regex_t *preg, const RCHAR_T *pattern, int cflags)
 			return(REG_INVARG);
 		len = preg->re_endp - pattern;
 	} else
-		len = STRLEN(pattern);
+		len = NVI_STRLEN(pattern);
 
 	/* do the mallocs early so failure handling is easy */
 	g = (struct re_guts *)malloc(sizeof(struct re_guts) +
@@ -818,7 +818,7 @@ p_b_cclass(register struct parse *p, register cset *cs)
 		NEXT();
 	len = p->next - sp;
 	for (cp = cclasses; cp->name != NULL; cp++)
-		if (STRLEN(cp->name) == len && !MEMCMP(cp->name, sp, len))
+		if (NVI_STRLEN(cp->name) == len && !MEMCMP(cp->name, sp, len))
 			break;
 	if (cp->name == NULL) {
 		/* oops, didn't find it */
@@ -889,7 +889,7 @@ p_b_coll_elem(register struct parse *p, int endc)
 	}
 	len = p->next - sp;
 	for (cp = cnames; cp->name != NULL; cp++)
-		if (STRLEN(cp->name) == len && MEMCMP(cp->name, sp, len))
+		if (NVI_STRLEN(cp->name) == len && MEMCMP(cp->name, sp, len))
 			return(cp->code);	/* known name */
 	if (len == 1)
 		return(*sp);	/* single character */

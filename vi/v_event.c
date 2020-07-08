@@ -97,7 +97,7 @@ v_editopt(SCR *sp, VICMD *vp)
 	size_t nlen;
 	char *p2;
 
-	INT2CHAR(sp, vp->ev.e_str2, STRLEN(vp->ev.e_str2)+1, np, nlen);
+	INT2CHAR(sp, vp->ev.e_str2, NVI_STRLEN(vp->ev.e_str2)+1, np, nlen);
 	p2 = strdup(np);
 	rval = api_opts_set(sp, vp->ev.e_str1, p2, 
 			    vp->ev.e_val1, vp->ev.e_val1);
@@ -135,7 +135,7 @@ v_tag(SCR *sp, VICMD *vp)
 		return (1);
 
 	ex_cinit(sp, &cmd, C_TAG, 0, OOBLNO, OOBLNO, 0);
-	argv_exp0(sp, &cmd, VIP(sp)->keyw, STRLEN(VIP(sp)->keyw));
+	argv_exp0(sp, &cmd, VIP(sp)->keyw, NVI_STRLEN(VIP(sp)->keyw));
 	return (v_exec_ex(sp, vp, &cmd));
 }
 
@@ -167,7 +167,7 @@ v_tagsplit(SCR *sp, VICMD *vp)
 
 	ex_cinit(sp, &cmd, C_TAG, 0, OOBLNO, OOBLNO, 0);
 	F_SET(&cmd, E_NEWSCREEN);
-	argv_exp0(sp, &cmd, VIP(sp)->keyw, STRLEN(VIP(sp)->keyw));
+	argv_exp0(sp, &cmd, VIP(sp)->keyw, NVI_STRLEN(VIP(sp)->keyw));
 	return (v_exec_ex(sp, vp, &cmd));
 }
 

@@ -68,7 +68,7 @@ ex_tag_first(SCR *sp, CHAR_T *tagarg)
 
 	/* Build an argument for the ex :tag command. */
 	ex_cinit(sp, &cmd, C_TAG, 0, OOBLNO, OOBLNO, 0);
-	argv_exp0(sp, &cmd, tagarg, STRLEN(tagarg));
+	argv_exp0(sp, &cmd, tagarg, NVI_STRLEN(tagarg));
 
 	/*
 	 * XXX
@@ -115,7 +115,7 @@ ex_tag_push(SCR *sp, EXCMD *cmdp)
 
 		/* Taglength may limit the number of characters. */
 		if ((tl =
-		    O_VAL(sp, O_TAGLENGTH)) != 0 && STRLEN(exp->tag_last) > tl)
+		    O_VAL(sp, O_TAGLENGTH)) != 0 && NVI_STRLEN(exp->tag_last) > tl)
 			exp->tag_last[tl] = '\0';
 		break;
 	case 0:
@@ -587,7 +587,7 @@ ex_tag_copy(SCR *orig, SCR *sp)
 	/* Copy the last tag. */
 	if (oexp->tag_last != NULL &&
 	    (nexp->tag_last = v_wstrdup(sp, oexp->tag_last, 
-					STRLEN(oexp->tag_last))) == NULL) {
+					NVI_STRLEN(oexp->tag_last))) == NULL) {
 		msgq(sp, M_SYSERR, NULL);
 		return (1);
 	}
@@ -997,7 +997,7 @@ ctag_slist(SCR *sp, CHAR_T *tag)
 	exp = EXP(sp);
 
 	/* Allocate and initialize the tag queue structure. */
-	INT2CHAR(sp, tag, STRLEN(tag) + 1, np, nlen);
+	INT2CHAR(sp, tag, NVI_STRLEN(tag) + 1, np, nlen);
 	len = nlen - 1;
 	CALLOC_GOTO(sp, tqp, TAGQ *, 1, sizeof(TAGQ) + len + 1);
 	CIRCLEQ_INIT(&tqp->tagq);

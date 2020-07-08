@@ -127,7 +127,7 @@ ip_optchange(SCR *sp, int offset, char *str, u_long *valp)
 
 	ipb.code = SI_EDITOPT;
 	ipb.str1 = (char*)opt->name;
-	ipb.len1 = STRLEN(opt->name) * sizeof(CHAR_T);
+	ipb.len1 = NVI_STRLEN(opt->name) * sizeof(CHAR_T);
 
 	(void)vi_send(ipp->o_fd, "ab1", &ipb);
 	return (0);

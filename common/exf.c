@@ -227,13 +227,18 @@ file_init(SCR *sp, FREF *frp, char *rcv_name, int flags)
 		/*
 		 * XXX
 		 * A seat of the pants calculation: try to keep the file in
-		 * 15 pages or less.  Don't use a page size larger than 10K
-		 * (vi should have good locality) or smaller than 1K.
+		 * 15 pages or less.  Don't use a page size larger than 8K
+		 * (vi should have good locality) or smaller than 1K. DB asks
+		 * for a power of two, so give it one.
 		 */
 		psize = ((sb.st_size / 15) + 1023) / 1024;
-		if (psize > 10)
-			psize = 10;
-		if (psize == 0)
+		if (psize >= 8)
+			psize = 8;
+		else if (psize >= 4)
+			psize = 4;
+		else if (psize >= 2)
+			psize = 2;
+		else
 			psize = 1;
 		psize *= 1024;
 

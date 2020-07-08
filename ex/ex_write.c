@@ -158,7 +158,7 @@ exwr(SCR *sp, EXCMD *cmdp, enum which cmd)
 			ex_emsg(sp, cmdp->cmd->usage, EXM_USAGE);
 			return (1);
 		}
-		if (argv_exp1(sp, cmdp, p, STRLEN(p), 1))
+		if (argv_exp1(sp, cmdp, p, NVI_STRLEN(p), 1))
 			return (1);
 
 		/*
@@ -203,7 +203,7 @@ exwr(SCR *sp, EXCMD *cmdp, enum which cmd)
 		    &cmdp->addr1, &cmdp->addr2, NULL, flags));
 
 	/* Build an argv so we get an argument count and file expansion. */
-	if (argv_exp2(sp, cmdp, p, STRLEN(p)))
+	if (argv_exp2(sp, cmdp, p, NVI_STRLEN(p)))
 		return (1);
 
 	/*
@@ -255,7 +255,7 @@ exwr(SCR *sp, EXCMD *cmdp, enum which cmd)
 			set_alt_name(sp, name);
 		break;
 	default:
-		INT2CHAR(sp, p, STRLEN(p) + 1, n, nlen);
+		INT2CHAR(sp, p, NVI_STRLEN(p) + 1, n, nlen);
 		ex_emsg(sp, n, EXM_FILECOUNT);
 		return (1);
 	}

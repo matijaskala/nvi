@@ -106,7 +106,7 @@ esac
 
 dnl A/UX has a broken getopt(3), strpbrk(3).
 case "$host_os" in
-aux*)	   LIBOBJS="getopt.o strpbrk.o $LIBOBJS";;
+aux*)	   LIBOBJS="libvi_la-getopt.o libvi_la-strpbrk.o $LIBOBJS";;
 esac
 
 dnl Ultrix has a broken POSIX.1 VDISABLE value.
@@ -434,7 +434,7 @@ if test "$vi_cv_perlinterp" = "yes"; then
 		-e 'ldopts'`
 	perlldflags=`cd $srcdir;$vi_cv_path_perl -MExtUtils::Embed \
 		-e 'ccdlflags'`
-	LIBOBJS="perl.o perlxsi.o perlsfio.o $LIBOBJS"
+	LIBOBJS="libvi_la-perl.o libvi_la-perlxsi.o libvi_la-perlsfio.o $LIBOBJS"
 	AC_DEFINE(HAVE_PERL_INTERP, 1,
 			[Define if you want to compile in the Perl interpreter.])
 	AC_CACHE_CHECK([whether we need to use perl's setenv],
@@ -473,7 +473,7 @@ if test "$vi_cv_tclinterp" = "yes"; then
 		AC_MSG_ERROR([No Tcl library found;])
 	fi
 	. $vi_cv_tclconfig
-	LIBOBJS="tcl.o $LIBOBJS"
+	LIBOBJS="libvi_la-tcl.o $LIBOBJS"
 	LIBS="$TCL_LIB_SPEC $TCL_LIBS $LIBS"
 	AC_DEFINE(HAVE_TCL_INTERP, 1,
 			[Define if you want to compile in the Tcl interpreter.])
@@ -628,12 +628,12 @@ AC_FUNC_VFORK
 
 dnl If we needed setenv or unsetenv, add in the clib/env.c replacement file.
 if test "$need_env" = yes; then
-	LIBOBJS="env.o $LIBOBJS"
+	LIBOBJS="libvi_la-env.o $LIBOBJS"
 fi
 
 dnl If we need strsep, add it and define it so we get a prototype.
 if test "$need_strsep" = yes; then
-	LIBOBJS="strsep.o $LIBOBJS"
+	LIBOBJS="libvi_la-strsep.o $LIBOBJS"
 fi
 
 dnl Check for fcntl/flock
@@ -1060,7 +1060,7 @@ system)
 
 		AC_DEFINE(USE_DYNAMIC_LOADING, 1,
 				[Define when dynamically loading DB 3.])
-		LIBOBJS="dldb.o $LIBOBJS"
+		LIBOBJS="libvi_la-dldb.o $LIBOBJS"
 		dl_src=../common/dldb.c
 		LIBS="-ldl $LIBS"
 	else
@@ -1103,9 +1103,9 @@ system)
 		DB_CPPFLAGS="-I$vi_cv_dbsrc/include_auto $DB_CPPFLAGS"
 		DB_CPPFLAGS="-I$with_db_build $DB_CPPFLAGS"
 		AC_DEFINE(USE_DB4_LOGGING, 1, [Define when using db4 logging.])
-		LIBOBJS="log4.o vi_auto.o vi_rec.o $LIBOBJS"
+		LIBOBJS="libvi_la-log4.o libvi_la-vi_auto.o libvi_la-vi_rec.o $LIBOBJS"
 	else
-		LIBOBJS="log.o $LIBOBJS"
+		LIBOBJS="libvi_la-log.o $LIBOBJS"
 	fi
 	;;
 esac
@@ -1123,7 +1123,7 @@ AC_MSG_RESULT($vi_cv_re_lib)
 case "$vi_cv_re_lib" in
 "bundled RE")
 	CPPFLAGS="-I\$(visrcdir)/regex $CPPFLAGS"
-	LIBOBJS="regcomp.o regerror.o regexec.o regfree.o $LIBOBJS";;
+	LIBOBJS="libvi_la-regcomp.o libvi_la-regerror.o libvi_la-regexec.o libvi_la-regfree.o $LIBOBJS";;
 "other RE")
 	;;
 esac

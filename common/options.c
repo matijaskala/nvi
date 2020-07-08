@@ -315,7 +315,7 @@ opts_init(SCR *sp, int *oargs)
 
 	/* Set numeric and string default values. */
 #define	OI(indx, str) {							\
-	a.len = STRLEN(str);						\
+	a.len = NVI_STRLEN(str);						\
 	if ((CHAR_T*)str != b2)	  /* GCC puts strings in text-space. */	\
 		(void)MEMCPY(b2, str, a.len+1);				\
 	if (opts_set(sp, argv, NULL)) {					\
@@ -620,10 +620,10 @@ opts_set(SCR *sp, ARGS **argv, char *usage)
 				goto badnum;
 			if ((nret =
 			    nget_uslong(sp, &value, sep, &endp, 10)) != NUM_OK) {
-				INT2CHAR(sp, name, STRLEN(name) + 1, 
+				INT2CHAR(sp, name, NVI_STRLEN(name) + 1, 
 					     np, nlen);
 				p2 = msg_print(sp, np, &nf);
-				INT2CHAR(sp, sep, STRLEN(sep) + 1, 
+				INT2CHAR(sp, sep, NVI_STRLEN(sep) + 1, 
 					     np, nlen);
 				t2 = msg_print(sp, np, &nf2);
 				switch (nret) {
@@ -647,10 +647,10 @@ opts_set(SCR *sp, ARGS **argv, char *usage)
 				break;
 			}
 			if (*endp && !ISBLANK(*endp)) {
-badnum:				INT2CHAR(sp, name, STRLEN(name) + 1, 
+badnum:				INT2CHAR(sp, name, NVI_STRLEN(name) + 1, 
 					     np, nlen);
 				p2 = msg_print(sp, np, &nf);
-				INT2CHAR(sp, sep, STRLEN(sep) + 1, 
+				INT2CHAR(sp, sep, NVI_STRLEN(sep) + 1, 
 					     np, nlen);
 				t2 = msg_print(sp, np, &nf2);
 				msgq(sp, M_ERR,
@@ -680,7 +680,7 @@ badnum:				INT2CHAR(sp, name, STRLEN(name) + 1,
 				break;
 
 			/* Report to subsystems. */
-			INT2CHAR(sp, sep, STRLEN(sep) + 1, np, nlen);
+			INT2CHAR(sp, sep, NVI_STRLEN(sep) + 1, np, nlen);
 			if (op->func != NULL &&
 			    op->func(sp, spo, np, &value) ||
 			    ex_optchange(sp, offset, np, &value) ||
@@ -712,7 +712,7 @@ badnum:				INT2CHAR(sp, name, STRLEN(name) + 1,
 			 * Do nothing if the value is unchanged, the underlying
 			 * functions can be expensive.
 			 */
-			INT2CHAR(sp, sep, STRLEN(sep) + 1, np, nlen);
+			INT2CHAR(sp, sep, NVI_STRLEN(sep) + 1, np, nlen);
 			if (!F_ISSET(op, OPT_ALWAYS) &&
 			    O_STR(sp, offset) != NULL &&
 			    !strcmp(O_STR(sp, offset), np))
@@ -879,7 +879,7 @@ opts_dump(SCR *sp, enum optdisp type)
 		}
 		F_CLR(&sp->opts[cnt], OPT_SELECTED);
 
-		curlen = STRLEN(op->name);
+		curlen = NVI_STRLEN(op->name);
 		switch (op->type) {
 		case OPT_0BOOL:
 		case OPT_1BOOL:
@@ -1049,7 +1049,7 @@ opts_search(CHAR_T *name)
 	 * Check to see if the name is the prefix of one (and only one)
 	 * option.  If so, return the option.
 	 */
-	len = STRLEN(name);
+	len = NVI_STRLEN(name);
 	for (found = NULL, op = optlist; op->name != NULL; ++op) {
 		if (op->name[0] < name[0])
 			continue;

@@ -217,7 +217,7 @@ argv_exp2(SCR *sp, EXCMD *excp, CHAR_T *cmd, size_t cmdlen)
 
 			*p = '\0';
 			INT2CHAR(sp, bp + SHELLOFFSET, 
-				 STRLEN(bp + SHELLOFFSET) + 1, np, nlen);
+				 NVI_STRLEN(bp + SHELLOFFSET) + 1, np, nlen);
 			d = strdup(np);
 			rval = argv_lexp(sp, excp, d);
 			free (d);
@@ -332,7 +332,7 @@ argv_fexp(SCR *sp, EXCMD *excp, CHAR_T *cmd, size_t cmdlen, CHAR_T *p, size_t *l
 				    "115|No previous command to replace \"!\"");
 				return (1);
 			}
-			len += tlen = STRLEN(exp->lastbcomm);
+			len += tlen = NVI_STRLEN(exp->lastbcomm);
 			off = p - bp;
 			ADD_SPACE_RETW(sp, bp, blen, len);
 			p = bp + off;
@@ -683,7 +683,7 @@ err:		if (ifp != NULL)
 		 * XXX
 		 * Assume that all shells have -c.
 		 */
-		INT2CHAR(sp, bp, STRLEN(bp)+1, np, nlen);
+		INT2CHAR(sp, bp, NVI_STRLEN(bp)+1, np, nlen);
 		execl(sh_path, sh, "-c", np, (char *)NULL);
 		msgq_str(sp, M_SYSERR, sh_path, "118|Error: execl: %s");
 		_exit(127);

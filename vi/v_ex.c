@@ -210,7 +210,7 @@ v_tagpush(SCR *sp, VICMD *vp)
 	EXCMD cmd;
 
 	ex_cinit(sp, &cmd, C_TAG, 0, OOBLNO, 0, 0);
-	argv_exp0(sp, &cmd, VIP(sp)->keyw, STRLEN(VIP(sp)->keyw) + 1);
+	argv_exp0(sp, &cmd, VIP(sp)->keyw, NVI_STRLEN(VIP(sp)->keyw) + 1);
 	return (v_exec_ex(sp, vp, &cmd));
 }
 

@@ -161,7 +161,7 @@ int eflags;
 		stop = string + pmatch[0].rm_eo;
 	} else {
 		start = string;
-		stop = start + STRLEN(start);
+		stop = start + NVI_STRLEN(start);
 	}
 	if (stop < start)
 		return(REG_INVARG);

@@ -628,7 +628,7 @@ vs_fg(SCR *sp, SCR **nspp, CHAR_T *name, int newscreen)
 	wp = sp->wp;
 
 	if (name)
-	    INT2CHAR(sp, name, STRLEN(name) + 1, np, nlen);
+	    INT2CHAR(sp, name, NVI_STRLEN(name) + 1, np, nlen);
 	else
 	    np = NULL;
 	if (newscreen)

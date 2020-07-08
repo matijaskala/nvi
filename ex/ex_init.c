@@ -61,7 +61,7 @@ ex_screen_copy(SCR *orig, SCR *sp)
 
 		if (oexp->lastbcomm != NULL &&
 		    (nexp->lastbcomm = v_wstrdup(sp, oexp->lastbcomm, 
-				     STRLEN(oexp->lastbcomm))) == NULL) {
+				     NVI_STRLEN(oexp->lastbcomm))) == NULL) {
 			msgq(sp, M_SYSERR, NULL);
 			return(1);
 		}

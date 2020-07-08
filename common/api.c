@@ -423,7 +423,7 @@ api_opts_get(SCR *sp, CHAR_T *name, char **value, int *boolvalue)
 	switch (op->type) {
 	case OPT_0BOOL:
 	case OPT_1BOOL:
-		MALLOC_RET(sp, *value, char *, STRLEN(op->name) + 2 + 1);
+		MALLOC_RET(sp, *value, char *, NVI_STRLEN(op->name) + 2 + 1);
 		(void)sprintf(*value,
 		    "%s"WS, O_ISSET(sp, offset) ? "" : "no", op->name);
 		if (boolvalue != NULL)
