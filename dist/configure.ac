@@ -261,6 +261,8 @@ AC_CHECK_HEADER(langinfo.h, [
 	])
 ])
 
+LIBS="$LIBS -lutil"
+
 dnl If the user wants a Gtk IPC front-end for nvi, build it.
 AC_SUBST(vi_programs)
 AC_SUBST(vi_ipc)

@@ -73,7 +73,7 @@ ex_display(SCR *sp, EXCMD *cmdp)
 static int
 is_prefix(ARGS *arg, CHAR_T *str)
 {
-	return arg->len <= STRLEN(str) && !MEMCMP(arg->bp, str, arg->len);
+	return arg->len <= NVI_STRLEN(str) && !MEMCMP(arg->bp, str, arg->len);
 }
 
 /*
