@@ -139,14 +139,14 @@ run_editor(void * vp)
 	 */
 	for (;;) {
 		if (ip_wevent(wp, NULL, &ev, 0, 0))
-			return;
+			return NULL;
 		if (ev.e_event == E_WRESIZE)
 			break;
 		if (ev.e_event == E_EOF || ev.e_event == E_ERR ||
 		    ev.e_event == E_SIGHUP || ev.e_event == E_SIGTERM)
-			return;
+			return NULL;
 		if (ev.e_event == E_IPCOMMAND && ev.e_ipcom == VI_QUIT)
-			return;
+			return NULL;
 	}
 
 	/* Run ex/vi. */
