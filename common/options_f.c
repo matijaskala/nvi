@@ -143,20 +143,6 @@ f_msgcat(SCR *sp, OPTION *op, char *str, u_long *valp)
 }
 
 /*
- * PUBLIC: int f_paragraph __P((SCR *, OPTION *, char *, u_long *));
- */
-int
-f_paragraph(SCR *sp, OPTION *op, char *str, u_long *valp)
-{
-	if (strlen(str) & 1) {
-		msgq(sp, M_ERR,
-		    "048|The paragraph option must be in two character groups");
-		return (1);
-	}
-	return (0);
-}
-
-/*
  * PUBLIC: int f_print __P((SCR *, OPTION *, char *, u_long *));
  */
 int
@@ -222,20 +208,6 @@ int
 f_reformat(SCR *sp, OPTION *op, char *str, u_long *valp)
 {
 	F_SET(sp, SC_SCR_REFORMAT);
-	return (0);
-}
-
-/*
- * PUBLIC: int f_section __P((SCR *, OPTION *, char *, u_long *));
- */
-int
-f_section(SCR *sp, OPTION *op, char *str, u_long *valp)
-{
-	if (strlen(str) & 1) {
-		msgq(sp, M_ERR,
-		    "049|The section option must be in two character groups");
-		return (1);
-	}
 	return (0);
 }
 

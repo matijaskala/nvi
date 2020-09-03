@@ -38,10 +38,9 @@ sigset_t __sigblockset;				/* GLOBAL: Blocked signals. */
 static void	   cl_func_std __P((WIN *));
 static void	   cl_end __P((CL_PRIVATE *));
 static CL_PRIVATE *cl_init __P((WIN *));
-static void	   perr __P((char *, char *));
 static int	   setsig __P((int, struct sigaction *, void (*)(int)));
 static void	   sig_end __P((GS *));
-static void	   term_init __P((char *, char *));
+static void	   term_init __P((char *));
 
 /*
  * main --
@@ -95,13 +94,13 @@ main(int argc, char **argv)
 	 * have to use termcap/terminfo to find out how big the screen is.
 	 */
 	if ((ttype = getenv("TERM")) == NULL)
-		ttype = "unknown";
-	term_init(gp->progname, ttype);
+		ttype = "ansi";
+	term_init(ttype);
 
 	/* Add the terminal type to the global structure. */
 	if ((OG_D_STR(gp, GO_TERM) =
 	    OG_STR(gp, GO_TERM) = strdup(ttype)) == NULL)
-		perr(gp->progname, NULL);
+		err(1, NULL);
 
 	/* Figure out how big the screen is. */
 	if (cl_ssize(NULL, 0, &rows, &cols, NULL))
@@ -176,7 +175,7 @@ cl_init(WIN *wp)
 	/* Allocate the CL private structure. */
 	CALLOC_NOMSG(NULL, clp, CL_PRIVATE *, 1, sizeof(CL_PRIVATE));
 	if (clp == NULL)
-		perr(gp->progname, NULL);
+		err(1, NULL);
 	gp->cl_private = clp;
 
 	/*
@@ -199,7 +198,7 @@ cl_init(WIN *wp)
 			goto tcfail;
 	} else if ((fd = open(_PATH_TTY, O_RDONLY, 0)) != -1) {
 		if (tcgetattr(fd, &clp->orig) == -1) {
-tcfail:			perr(gp->progname, "tcgetattr");
+tcfail:			err(1, "tcgetattr");
 			exit (1);
 		}
 		(void)close(fd);
@@ -228,7 +227,7 @@ cl_end(CL_PRIVATE *clp)
  *	Initialize terminal information.
  */
 static void
-term_init(char *name, char *ttype)
+term_init(char *ttype)
 {
 	int err;
 
@@ -236,13 +235,9 @@ term_init(char *name, char *ttype)
 	setupterm(ttype, STDOUT_FILENO, &err);
 	switch (err) {
 	case -1:
-		(void)fprintf(stderr,
-		    "%s: No terminal database found\n", name);
-		exit (1);
+		errx(1, "No terminal database found");
 	case 0:
-		(void)fprintf(stderr,
-		    "%s: %s: unknown terminal type\n", name, ttype);
-		exit (1);
+		errx(1, "%s: unknown terminal type", ttype);
 	}
 }
 
@@ -310,7 +305,7 @@ sig_init(GS *gp, SCR *sp)
 		    setsig(SIGWINCH, &clp->oact[INDX_WINCH], h_winch)
 #endif
 		    ) {
-			perr(gp->progname, NULL);
+			err(1, NULL);
 			return (1);
 		}
 	} else
@@ -340,21 +335,12 @@ setsig(int signo, struct sigaction *oactp, void (*handler) (int))
 	 * Use sigaction(2), not signal(3), since we don't always want to
 	 * restart system calls.  The example is when waiting for a command
 	 * mode keystroke and SIGWINCH arrives.  Besides, you can't portably
-	 * restart system calls (thanks, POSIX!).  On the other hand, you
-	 * can't portably NOT restart system calls (thanks, Sun!).  SunOS
-	 * used SA_INTERRUPT as their extension to NOT restart read calls.
-	 * We sure hope nobody else used it for anything else.  Mom told me
-	 * there'd be days like this.  She just never told me that there'd
-	 * be so many.
+	 * restart system calls (thanks, POSIX!).
 	 */
 	act.sa_handler = handler;
 	sigemptyset(&act.sa_mask);
 
-#ifdef SA_INTERRUPT
-	act.sa_flags = SA_INTERRUPT;
-#else
 	act.sa_flags = 0;
-#endif
 	return (sigaction(signo, &act, oactp));
 }
 
@@ -413,18 +399,4 @@ cl_func_std(WIN *wp)
 	gp->scr_split = cl_split;
 	gp->scr_suspend = cl_suspend;
 	gp->scr_usage = cl_usage;
-}
-
-/*
- * perr --
- *	Print system error.
- */
-static void
-perr(char *name, char *msg)
-{
-	(void)fprintf(stderr, "%s:", name);
-	if (msg != NULL)
-		(void)fprintf(stderr, "%s:", msg);
-	(void)fprintf(stderr, "%s\n", strerror(errno));
-	exit(1);
 }

@@ -76,10 +76,12 @@ OPTLIST const optlist[] = {
 	{L("directory"),	NULL,		OPT_STR,	0},
 /* O_EDCOMPATIBLE   4BSD */
 	{L("edcompatible"),NULL,		OPT_0BOOL,	0},
-/* O_ESCAPETIME	  4.4BSD */
-	{L("escapetime"),	NULL,		OPT_NUM,	0},
 /* O_ERRORBELLS	    4BSD */
 	{L("errorbells"),	NULL,		OPT_0BOOL,	0},
+/* O_ESCAPETIME	  4.4BSD */
+	{L("escapetime"),	NULL,		OPT_NUM,	0},
+/* O_EXPANDTAB	NetBSD 5.0 */
+	{L("expandtab"),	NULL,		OPT_0BOOL,	0},
 /* O_EXRC	System V (undocumented) */
 	{L("exrc"),	NULL,		OPT_0BOOL,	0},
 /* O_EXTENDED	  4.4BSD */
@@ -120,6 +122,8 @@ OPTLIST const optlist[] = {
 	{L("lock"),	NULL,		OPT_1BOOL,	0},
 /* O_MAGIC	    4BSD */
 	{L("magic"),	NULL,		OPT_1BOOL,	0},
+/* O_MATCHCHARS	  NetBSD 2.0 */
+	{L("matchchars"),	NULL,		OPT_STR,	OPT_PAIRS},
 /* O_MATCHTIME	  4.4BSD */
 	{L("matchtime"),	NULL,		OPT_NUM,	0},
 /* O_MESG	    4BSD */
@@ -146,7 +150,7 @@ OPTLIST const optlist[] = {
 /* O_OPTIMIZE	    4BSD */
 	{L("optimize"),	NULL,		OPT_1BOOL,	0},
 /* O_PARAGRAPHS	    4BSD */
-	{L("paragraphs"),	f_paragraph,	OPT_STR,	0},
+	{L("paragraphs"),	NULL,		OPT_STR,	OPT_PAIRS},
 /* O_PATH	  4.4BSD */
 	{L("path"),	NULL,		OPT_STR,	0},
 /* O_PRINT	  4.4BSD */
@@ -170,7 +174,7 @@ OPTLIST const optlist[] = {
 /* O_SEARCHINCR	  4.4BSD */
 	{L("searchincr"),	NULL,		OPT_0BOOL,	0},
 /* O_SECTIONS	    4BSD */
-	{L("sections"),	f_section,	OPT_STR,	0},
+	{L("sections"),	NULL,		OPT_STR,	OPT_PAIRS},
 /* O_SECURE	  4.4BSD */
 	{L("secure"),	NULL,		OPT_0BOOL,	OPT_NOUNSET},
 /* O_SHELL	    4BSD */
@@ -255,6 +259,7 @@ static OABBREV const abbrev[] = {
 	{L("dir"),	O_TMP_DIRECTORY},	/*     4BSD */
 	{L("eb"),	O_ERRORBELLS},		/*     4BSD */
 	{L("ed"),	O_EDCOMPATIBLE},	/*     4BSD */
+	{L("et"),	O_EXPANDTAB},		/* NetBSD 5.0 */
 	{L("ex"),	O_EXRC},		/* System V (undocumented) */
 	{L("fe"),	O_FILEENCODING},
 	{L("ht"),	O_HARDTABS},		/*     4BSD */
@@ -705,6 +710,14 @@ badnum:				INT2CHAR(sp, name, NVI_STRLEN(name) + 1,
 				if (!disp)
 					disp = SELECT_DISPLAY;
 				F_SET(spo, OPT_SELECTED);
+				break;
+			}
+
+			/* Check for strings that must have even length. */
+			if (F_ISSET(op, OPT_PAIRS) && NVI_STRLEN(sep) & 1) {
+				msgq_wstr(sp, M_ERR, name,
+				    "047|The %s option must be in two character groups");
+				rval = 1;
 				break;
 			}
 
